@@ -15,32 +15,28 @@ n = int(input())
 
 lst = list(map(int, input().split()))
 
-up_dp = []
-down_dp = []
+up_dp = [1] * n
+down_dp = [1] * n
 
-max = 0
-        
-check = [0]
+result = 0
 
 # dp 만드는 함수
 def make_dp(lst,dp):
-    for val in lst:
-        if not val in check:
-            if check[-1] >= val: 
-                check.pop()
+    for i in range(n):
+        for j in range(i):
+            if lst[j] < lst[i]:
+                dp[i] = max(dp[i], dp[j] + 1)
+    # print(dp)
 
-            check.append(val)
-
-        dp.append(len(check)-1)
-        
+# 왼쪽에서 가장 긴 증가수열 찾을 때
 make_dp(lst,up_dp)
 
-# 재사용을 위한 check 변수 초기화
-check = [0]
-make_dp(lst[::-1],down_dp)
+# 오른쪽에서 부터 가장 긴 증가수열을 찾을 때
+make_dp(lst[::-1], down_dp)
 
 for up, down in zip(up_dp, down_dp[::-1]):
-    if (up + down) > max:
-        max = up + down
+    if (up + down) > result:
+        result = up + down
 
-print(max)
+print(result-1)
+
