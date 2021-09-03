@@ -15,27 +15,26 @@
  * @return {number}
  */
 const arrayNesting = function(nums) {
-    let answer = 0;  // 최종 정답
-    let set = new Set();
-    let count;  // 순회 깊이를 나타내는 변수
+    let answer = 0;
+    let depth;
+    // visited = [false] * len(nums);
+    // new Array(nums.length).fill(false) => 이건 시간 복잡도가 오래 걸림
+    let visited;
+    (visited = []).length = nums.length;
+    visited.fill(false);
 
-    // 해당 idx에 해당하는 값 탐색해보는 함수
-    const dfs = (k) => {
-        if(set.has(k)){
-            return  
-        } else {
-            set.add(k);
-            count += 1;
-            dfs(nums[k]);
-            return;
+    const bfs = (k) => {
+        while (!visited[k]){
+            depth += 1;
+            visited[k] = true;
+            k = nums[k];
         }
     }
-
-    // idx별로 dfs탐색 
+    
     nums.forEach((val, idx) => {
-        count = 0;
-        dfs(idx);
-        answer = (count >= answer) ? count : answer;
+        depth = 0;
+        bfs(idx);
+        answer = (depth >= answer) ? depth : answer; 
     })
 
     return answer;
