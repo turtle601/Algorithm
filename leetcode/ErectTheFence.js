@@ -24,9 +24,9 @@ function ccw(p1, p2, p3){
  * @return {number[][]}
  */
 const outerTrees = function(trees) {
-
+    
+    // 정렬
     trees.sort((a,b) => (a[0] - b[0]) || (a[1] - b[1]));
-    console.log(trees);
     
     let upper = [];
     let lower = [];
@@ -36,20 +36,17 @@ const outerTrees = function(trees) {
         while (upper.length >= 2 && ccw(upper[upper.length - 2], upper[upper.length-1], t) < 0){
             upper.pop();
         }
-
         // lower는 시계 방향일 때만 가져 온다. => 반시걔 방향 ( ccw > 0) 일 경우 pop()
         while (lower.length >= 2 && ccw(lower[lower.length -2], lower[lower.length-1], t) > 0){
             lower.pop();
         }
-
         upper.push(t);
         lower.push(t);
-        
     }
     return [...new Set([...upper,...lower])];
 };
 
 // execute
 const trees = [[0,0],[0,100],[100,100],[100,0],[50,50]];
-
-console.log(outerTrees(trees));
+const trees1 = [[1,1],[2,2],[2,0],[2,4],[3,3],[4,2]];
+console.log(outerTrees(trees1));
