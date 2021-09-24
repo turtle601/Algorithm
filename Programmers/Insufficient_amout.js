@@ -4,19 +4,12 @@
 'use strict'
 
 function solution(price, money, count) {
-    let answer = -1;
     let total = 0;
-    let flag = false;
 
     for (let cnt = 1; cnt <= count; cnt++ ){
         total += (cnt * price)
-        
-        if (total > money) {
-            flag = true;
-        }
     }
-    answer = flag ? total - money : 0;
 
-    return answer;
+    return (total > money) ? total - money : 0;
 }
 
