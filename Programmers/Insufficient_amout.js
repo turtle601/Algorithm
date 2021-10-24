@@ -12,4 +12,3 @@ function solution(price, money, count) {
 
     return (total > money) ? total - money : 0;
 }
-
