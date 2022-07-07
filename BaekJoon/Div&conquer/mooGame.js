@@ -1,31 +1,21 @@
-// class MooGame {
-//   constructor() {
-//     this.n = 0;
-//   }
-
-//   getInput(line) {
-//     this.n = line;
-//   }
-
-//   S() {
-//     let n = 0;
-//     let str = [];
-
-//     while (str.length < this.n) {
-//       if (n === 0) {
-//         str = ["m", "o", "o"];
-//       } else {
-//         str = [...str, "m", ...new Array(n + 2).fill("o"), ...str];
-//       }
-
-//       n += 1;
-//     }
-
-//     return str[this.n - 1];
-//   }
-// }
-
 let result = "";
+
+const divideMoo = (wholeLen, depth, N) => {
+  if (depth === 0) {
+    return N === 0 ? "m" : "o";
+  }
+
+  const div1 = Math.floor((wholeLen - (depth + 3)) / 2);
+  const div2 = div1 + depth + 3;
+
+  if (N < div1) {
+    return divideMoo(div1, depth - 1, N);
+  } else if (N < div2) {
+    return div1 === N ? "m" : "o";
+  } else {
+    return divideMoo(div1, depth - 1, N - div2);
+  }
+};
 
 (function solution() {
   const readline = require("readline");
@@ -50,24 +40,7 @@ let result = "";
       }
     }
 
-    const moo = (wholeLen, depth, N) => {
-      if (depth === 0) {
-        return N === 0 ? "m" : "o";
-      }
-
-      const div1 = Math.floor((wholeLen - (depth + 3)) / 2);
-      const div2 = div1 + depth + 3;
-
-      if (N < div1) {
-        return moo(div1, depth - 1, N);
-      } else if (N < div2) {
-        return div1 === N ? "m" : "o";
-      } else {
-        return moo(div1, depth - 1, N - div2);
-      }
-    };
-
-    result = moo(mooLen, i, N);
+    result = divideMoo(mooLen, i, N);
   }).on("close", function () {
     console.log(result);
   });
