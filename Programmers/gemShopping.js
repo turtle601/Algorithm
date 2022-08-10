@@ -1,31 +1,36 @@
 // 프로그래머스 보석 쇼핑
-const hasAllGerms = (gemsSlice, gems) => {
-  const gemsSet = new Set([...gems]);
-  const gemsSliceSet = new Set([...gemsSlice]);
-
-  return [...gemsSet].length === [...gemsSliceSet].length;
-};
 
 function solution(gems) {
   let left = 0;
   let right = 0;
 
-  const n = gems.length;
+  const gemsSize = [...new Set(gems)].length;
+  const gemsMap = new Map();
 
-  let result = [];
+  gemsMap.set(gems[0], 1);
 
-  while (left <= right && right <= n - 1) {
-    if (!hasAllGerms(gems.slice(left, right + 1), gems)) {
-      right += 1;
-    } else {
-      result.push([left, right]);
+  let answer = [0, gems.length - 1];
+
+  while (left <= right && right < gems.length) {
+    if (gemsMap.size === gemsSize) {
+      if (right - left < answer[1] - answer[0]) {
+        answer = [left, right];
+      }
+
+      gemsMap.set(gems[left], gemsMap.get(gems[left]) - 1);
+
+      if (gemsMap.get(gems[left]) === 0) {
+        gemsMap.delete(gems[left]);
+      }
+
       left += 1;
+    } else {
+      right += 1;
+      gemsMap.set(gems[right], (gemsMap.get(gems[right]) || 0) + 1);
     }
   }
 
-  result.sort((x, y) => x[1] - x[0] - (y[1] - y[0]));
-
-  return result[0].map((v) => v + 1);
+  return answer.map((v) => v + 1);
 }
 
 console.log(
