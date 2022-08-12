@@ -1,19 +1,16 @@
 // 프로그래머스 단어 퍼즐
 function solution(strs, t) {
-  const n = t.length;
-  const dp = new Array(n).fill(Infinity);
+  const dp = new Array(t.length + 1).fill(0);
   const strsSet = new Set(strs);
 
-  for (let i = 0; i < t.length; i++) {
-    for (let j = i; j > -1; j--) {
-      const value = t.slice(j, i + 1);
+  for (let i = 1; i < t.length + 1; i++) {
+    dp[i] = Infinity;
+
+    for (let j = 1; j < Math.min(i + 1, 6); j++) {
+      const value = t.slice(i - j, i);
 
       if (strsSet.has(value)) {
-        if (j === 0) {
-          dp[i] = 1;
-        } else {
-          dp[i] = Math.min(dp[i], dp[j - 1] + 1);
-        }
+        dp[i] = Math.min(dp[i], dp[i - j] + 1);
       }
     }
   }
