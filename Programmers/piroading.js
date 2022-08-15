@@ -1,38 +1,30 @@
 // 프로그래머스 피로도
 function solution(k, dungeons) {
   const n = dungeons.length;
+  const visited = Array.from({ length: n }, () => false);
 
-  return permutations(dungeons, n).reduce(
-    (pre, cur) => Math.max(pre, countPiroad(cur, k)),
-    0
-  );
+  return dfs(k, 0, n, dungeons, visited);
 }
 
-function permutations(arr, n) {
-  if (n === 1) return arr.map((v) => [v]);
+function dfs(remain, depth, n, dungeons, visited) {
+  if (depth === n) {
+    return depth;
+  }
 
-  const result = [];
+  let count = depth;
 
-  arr.forEach((fixed, idx, arr) => {
-    const rest = arr.filter((_, id) => id !== idx);
-    const perms = permutations(rest, n - 1);
-    const combine = perms.map((v) => [fixed, ...v]);
-
-    result.push(...combine);
-  });
-
-  return result;
-}
-
-function countPiroad(arr, k) {
-  let count = 0;
-
-  for (const [rest, usage] of arr) {
-    if (rest <= k) {
-      k -= usage;
-      count += 1;
+  for (let i = 0; i < n; i++) {
+    const [rest, usage] = dungeons[i];
+    if (rest <= remain && !visited[i]) {
+      visited[i] = true;
+      count = Math.max(
+        count,
+        dfs(remain - usage, depth + 1, n, dungeons, visited)
+      );
+      visited[i] = false;
     }
   }
+
   return count;
 }
 
